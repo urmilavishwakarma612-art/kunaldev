@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Linkedin, Github, Instagram, Twitter, Mail, Send } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const socialLinks = [
   {
@@ -27,24 +29,93 @@ const socialLinks = [
   },
 ];
 
+interface FormErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+}
+
 export const Contact = () => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const headerAnimation = useScrollAnimation(0.2);
+  const formAnimation = useScrollAnimation(0.1);
+  const infoAnimation = useScrollAnimation(0.1);
+
+  const validateForm = (): boolean => {
+    const newErrors: FormErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = "Name must be at least 2 characters";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const mailtoLink = `mailto:codexkunal.dev@gmail.com?subject=Contact from ${encodeURIComponent(formData.name)}&body=${encodeURIComponent(formData.message)}%0A%0AFrom: ${encodeURIComponent(formData.email)}`;
+
+    if (!validateForm()) {
+      toast({
+        title: "Validation Error",
+        description: "Please fix the errors in the form",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const mailtoLink = `mailto:codexkunal.dev@gmail.com?subject=Contact from ${encodeURIComponent(formData.name.trim())}&body=${encodeURIComponent(formData.message.trim())}%0A%0AFrom: ${encodeURIComponent(formData.email.trim())}`;
     window.location.href = mailtoLink;
+
+    toast({
+      title: "Message Ready!",
+      description: "Your email client has been opened with the message.",
+    });
+
+    setFormData({ name: "", email: "", message: "" });
+    setErrors({});
+  };
+
+  const handleChange = (field: keyof typeof formData, value: string) => {
+    setFormData({ ...formData, [field]: value });
+    if (errors[field]) {
+      setErrors({ ...errors, [field]: undefined });
+    }
   };
 
   return (
     <section id="contact" className="py-32 px-6 relative">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-16 animate-fade-in">
+        <div
+          ref={headerAnimation.ref}
+          className={`text-center mb-16 transition-all duration-700 ${
+            headerAnimation.isVisible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-10"
+          }`}
+        >
           <p className="text-primary font-medium tracking-wider uppercase text-sm mb-4">
             Get In Touch
           </p>
@@ -58,7 +129,14 @@ export const Contact = () => {
 
         <div className="grid md:grid-cols-2 gap-12 items-start">
           {/* Contact Form */}
-          <div className="glass-strong rounded-2xl p-8 animate-fade-in-delay-1">
+          <div
+            ref={formAnimation.ref}
+            className={`glass-strong rounded-2xl p-8 transition-all duration-700 delay-100 ${
+              formAnimation.isVisible
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 -translate-x-10"
+            }`}
+          >
             <h3 className="text-2xl font-display font-bold mb-6">Send a Message</h3>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
@@ -66,30 +144,42 @@ export const Contact = () => {
                   type="text"
                   placeholder="Your Name"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                  onChange={(e) => handleChange("name", e.target.value)}
+                  className={`bg-background/50 border-border/50 focus:border-primary transition-colors ${
+                    errors.name ? "border-destructive" : ""
+                  }`}
                 />
+                {errors.name && (
+                  <p className="text-destructive text-sm mt-1">{errors.name}</p>
+                )}
               </div>
               <div>
                 <Input
                   type="email"
                   placeholder="Your Email"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="bg-background/50 border-border/50 focus:border-primary transition-colors"
+                  onChange={(e) => handleChange("email", e.target.value)}
+                  className={`bg-background/50 border-border/50 focus:border-primary transition-colors ${
+                    errors.email ? "border-destructive" : ""
+                  }`}
                 />
+                {errors.email && (
+                  <p className="text-destructive text-sm mt-1">{errors.email}</p>
+                )}
               </div>
               <div>
                 <Textarea
                   placeholder="Your Message"
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
+                  onChange={(e) => handleChange("message", e.target.value)}
                   rows={5}
-                  className="bg-background/50 border-border/50 focus:border-primary transition-colors resize-none"
+                  className={`bg-background/50 border-border/50 focus:border-primary transition-colors resize-none ${
+                    errors.message ? "border-destructive" : ""
+                  }`}
                 />
+                {errors.message && (
+                  <p className="text-destructive text-sm mt-1">{errors.message}</p>
+                )}
               </div>
               <Button type="submit" variant="hero" className="w-full group">
                 Send Message
@@ -99,7 +189,14 @@ export const Contact = () => {
           </div>
 
           {/* Contact Info & Social Links */}
-          <div className="space-y-8 animate-fade-in-delay-2">
+          <div
+            ref={infoAnimation.ref}
+            className={`space-y-8 transition-all duration-700 delay-200 ${
+              infoAnimation.isVisible
+                ? "opacity-100 translate-x-0"
+                : "opacity-0 translate-x-10"
+            }`}
+          >
             {/* Email Card */}
             <div className="glass-strong rounded-2xl p-8">
               <h3 className="text-2xl font-display font-bold mb-4">Email Me</h3>
@@ -118,13 +215,16 @@ export const Contact = () => {
             <div className="glass-strong rounded-2xl p-8">
               <h3 className="text-2xl font-display font-bold mb-6">Follow Me</h3>
               <div className="grid grid-cols-2 gap-4">
-                {socialLinks.map((social) => (
+                {socialLinks.map((social, index) => (
                   <a
                     key={social.name}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 p-4 rounded-xl bg-background/30 hover:bg-primary/10 border border-border/30 hover:border-primary/50 transition-all group"
+                    style={{
+                      transitionDelay: infoAnimation.isVisible ? `${index * 100}ms` : "0ms",
+                    }}
                   >
                     <social.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
                     <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
