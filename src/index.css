@@ -80,7 +80,7 @@
   }
 
   .logo-adaptive {
-    filter: invert(0);
+    filter: invert(1);
   }
 
   .light .logo-adaptive {
