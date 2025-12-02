@@ -27,14 +27,14 @@ const projects = [
   },
   {
     id: 3,
-    title: "StartupHub",
-    description: "A platform for early-stage entrepreneurs to pitch ideas and connect with investors.",
-    tags: ["React", "Supabase", "Stripe", "Tailwind CSS"],
-    color: "from-emerald-500/20 to-teal-500/20",
+    title: "Developer Portfolio",
+    description: "A premium, futuristic portfolio with stunning animations, interactive star field background, and seamless user experience.",
+    tags: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
+    color: "from-cyan-500/20 to-blue-500/20",
     features: [
-      "Integrated payment processing",
-      "Built admin panel for content moderation",
-      "SEO optimized for organic growth",
+      "Interactive star field with parallax effects",
+      "Scroll-responsive infinite skill marquee",
+      "Dark space theme with electric accents",
     ],
   },
 ];
