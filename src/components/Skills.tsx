@@ -29,27 +29,80 @@ const SkillCard = ({ skill }: { skill: { name: string; icon: string } }) => (
 );
 
 export const Skills = () => {
-  const [scrollY, setScrollY] = useState(0);
-  const sectionRef = useRef<HTMLElement>(null);
+  const [direction, setDirection] = useState<"left" | "right">("left");
+  const lastScrollY = useRef(0);
+  const row1Ref = useRef<HTMLDivElement>(null);
+  const row2Ref = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<number>();
+  const position1 = useRef(0);
+  const position2 = useRef(-400);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current) {
+        setDirection("left");
+      } else if (currentScrollY < lastScrollY.current) {
+        setDirection("right");
+      }
+      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Calculate offset based on scroll position
-  const row1Offset = -scrollY * 0.3;
-  const row2Offset = scrollY * 0.3;
+  useEffect(() => {
+    const speed = 1;
+    const cardWidth = 96; // 80px card + 16px gap
+    const totalWidth = skills.length * cardWidth;
+
+    const animate = () => {
+      if (direction === "left") {
+        position1.current -= speed;
+        position2.current += speed;
+      } else {
+        position1.current += speed;
+        position2.current -= speed;
+      }
+
+      // Reset positions for infinite loop
+      if (position1.current <= -totalWidth) {
+        position1.current = 0;
+      } else if (position1.current >= 0) {
+        position1.current = -totalWidth;
+      }
+
+      if (position2.current >= 0) {
+        position2.current = -totalWidth;
+      } else if (position2.current <= -totalWidth) {
+        position2.current = 0;
+      }
+
+      if (row1Ref.current) {
+        row1Ref.current.style.transform = `translateX(${position1.current}px)`;
+      }
+      if (row2Ref.current) {
+        row2Ref.current.style.transform = `translateX(${position2.current}px)`;
+      }
+
+      animationRef.current = requestAnimationFrame(animate);
+    };
+
+    animationRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [direction]);
 
   // Duplicate skills for seamless loop
   const duplicatedSkills = [...skills, ...skills, ...skills];
 
   return (
-    <section id="skills" ref={sectionRef} className="relative py-32 px-4 overflow-hidden">
+    <section id="skills" className="relative py-32 px-4 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -64,24 +117,18 @@ export const Skills = () => {
 
       {/* Scrolling Skills Rows */}
       <div className="space-y-6">
-        {/* Row 1 - moves left on scroll down */}
-        <div className="relative">
-          <div
-            className="flex gap-4 transition-transform duration-100 ease-out"
-            style={{ transform: `translateX(${row1Offset}px)` }}
-          >
+        {/* Row 1 */}
+        <div className="relative overflow-hidden">
+          <div ref={row1Ref} className="flex gap-4 will-change-transform">
             {duplicatedSkills.map((skill, index) => (
               <SkillCard key={`row1-${index}`} skill={skill} />
             ))}
           </div>
         </div>
 
-        {/* Row 2 - moves right on scroll down */}
-        <div className="relative">
-          <div
-            className="flex gap-4 transition-transform duration-100 ease-out"
-            style={{ transform: `translateX(${row2Offset - 400}px)` }}
-          >
+        {/* Row 2 - opposite direction */}
+        <div className="relative overflow-hidden">
+          <div ref={row2Ref} className="flex gap-4 will-change-transform">
             {duplicatedSkills.map((skill, index) => (
               <SkillCard key={`row2-${index}`} skill={skill} />
             ))}
