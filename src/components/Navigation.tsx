@@ -29,12 +29,12 @@ export const Navigation = () => {
       }`}
     >
       {/* Desktop Navigation */}
-      <div className="hidden md:flex items-center gap-1 glass-strong rounded-full px-2 py-2">
+      <div className="hidden md:flex items-center gap-1 glass-nav rounded-full px-2 py-2">
         {navItems.map((item) => (
           <a
             key={item.name}
             href={item.href}
-            className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 rounded-full hover:bg-secondary"
+            className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-all duration-300 rounded-full hover:bg-white/10"
           >
             {item.name}
           </a>
@@ -48,20 +48,20 @@ export const Navigation = () => {
       <div className="md:hidden">
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="glass-strong p-3 rounded-full"
+          className="glass-nav p-3 rounded-full"
         >
           {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
 
         {isMobileMenuOpen && (
-          <div className="absolute top-16 left-1/2 -translate-x-1/2 glass-strong rounded-2xl p-4 min-w-[200px] animate-fade-in">
+          <div className="absolute top-16 left-1/2 -translate-x-1/2 glass-nav rounded-2xl p-4 min-w-[200px] animate-fade-in">
             <div className="flex flex-col gap-2">
               {navItems.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors duration-300 rounded-lg hover:bg-secondary"
+                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-all duration-300 rounded-lg hover:bg-white/10"
                 >
                   {item.name}
                 </a>
