@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Menu, X } from "lucide-react";
+import codexkunalLogo from "@/assets/codexkunal-logo.png";
 
 const navItems = [
   { name: "Home", href: "#home" },
@@ -32,6 +33,13 @@ export const Navigation = () => {
     >
       {/* Desktop Navigation */}
       <div className={`hidden md:flex items-center gap-1 glass-nav rounded-full px-2 py-2 ${isScrolled ? 'glass-nav-scrolled' : ''}`}>
+        <a href="#home" className="flex items-center gap-2 px-3">
+          <img 
+            src={codexkunalLogo} 
+            alt="CODExKUNAL" 
+            className="w-7 h-7 object-contain logo-adaptive"
+          />
+        </a>
         {navItems.map((item) => (
           <a
             key={item.name}
@@ -48,7 +56,14 @@ export const Navigation = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <div className="md:hidden">
+      <div className="md:hidden flex items-center gap-2">
+        <a href="#home" className="glass-nav p-2 rounded-full">
+          <img 
+            src={codexkunalLogo} 
+            alt="CODExKUNAL" 
+            className="w-7 h-7 object-contain logo-adaptive"
+          />
+        </a>
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           className={`glass-nav p-3 rounded-full ${isScrolled ? 'glass-nav-scrolled' : ''}`}
