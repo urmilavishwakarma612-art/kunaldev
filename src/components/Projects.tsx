@@ -3,14 +3,14 @@ import { ArrowUpRight } from "lucide-react";
 const projects = [
   {
     id: 1,
-    title: "TechFlow",
-    description: "A modern SaaS dashboard with real-time analytics, dark mode, and seamless user experience.",
-    tags: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    color: "from-pink-500/20 to-purple-500/20",
+    title: "RAHI",
+    description: "AI-powered emergency platform that enables victims to report highway incidents in under 20 seconds with GPS auto-location and offline support.",
+    tags: ["React", "TypeScript", "Supabase", "Leaflet.js", "PWA"],
+    color: "from-red-500/20 to-orange-500/20",
     features: [
-      "Built responsive dashboard with 40+ components",
-      "Implemented real-time data visualization",
-      "Achieved 95+ Lighthouse score",
+      "One-click emergency reporting with voice-to-text",
+      "AI severity analysis & real-time volunteer routing",
+      "Offline-first PWA with incident queue sync",
     ],
   },
   {
