@@ -8,6 +8,7 @@ const navItems = [
   { name: "Work", href: "#work" },
   { name: "Skills", href: "#skills" },
   { name: "Testimonials", href: "#testimonials" },
+  { name: "Contact", href: "#contact" },
 ];
 
 export const Navigation = () => {
@@ -34,7 +35,7 @@ export const Navigation = () => {
           <a
             key={item.name}
             href={item.href}
-            className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-all duration-300 rounded-full hover:bg-white/10"
+            className="nav-link-glow px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-all duration-300 rounded-full"
           >
             {item.name}
           </a>
@@ -61,7 +62,7 @@ export const Navigation = () => {
                   key={item.name}
                   href={item.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-all duration-300 rounded-lg hover:bg-white/10"
+                  className="nav-link-glow px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-all duration-300 rounded-lg"
                 >
                   {item.name}
                 </a>
