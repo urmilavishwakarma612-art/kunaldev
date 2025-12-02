@@ -1,10 +1,12 @@
-import { Github, Linkedin, Twitter, Mail } from "lucide-react";
+import { Github, Linkedin, Twitter, Instagram, Mail } from "lucide-react";
+import codexkunalLogo from "@/assets/codexkunal-logo.png";
 
 const socialLinks = [
-  { name: "GitHub", icon: Github, href: "#" },
-  { name: "LinkedIn", icon: Linkedin, href: "#" },
-  { name: "Twitter", icon: Twitter, href: "#" },
-  { name: "Email", icon: Mail, href: "mailto:kunal@example.com" },
+  { name: "GitHub", icon: Github, href: "https://github.com/kunalvish08" },
+  { name: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/in/kunal-vishwakarma-975b26326/" },
+  { name: "Twitter", icon: Twitter, href: "https://x.com/Kunal_Vish_08" },
+  { name: "Instagram", icon: Instagram, href: "https://www.instagram.com/code_x_kunal_dev/" },
+  { name: "Email", icon: Mail, href: "mailto:codexkunal.dev@gmail.com" },
 ];
 
 const footerLinks = {
@@ -16,11 +18,10 @@ const footerLinks = {
   specifics: [
     { name: "Skills", href: "#skills" },
     { name: "Testimonials", href: "#testimonials" },
-    { name: "Resume", href: "#" },
+    { name: "Contact", href: "#contact" },
   ],
   more: [
     { name: "Blog", href: "#" },
-    { name: "Contact", href: "#" },
     { name: "Book a Call", href: "#" },
   ],
 };
@@ -32,18 +33,28 @@ export const Footer = () => {
         <div className="grid md:grid-cols-4 gap-12">
           {/* Logo & Social */}
           <div className="md:col-span-1">
-            <div className="text-2xl font-bold mb-4">
-              <span className="text-gradient">K</span>
+            <div className="flex items-center gap-3 mb-4">
+              <img 
+                src={codexkunalLogo} 
+                alt="CODExKUNAL Logo" 
+                className="w-12 h-12 object-contain invert dark:invert-0 transition-all"
+                style={{ filter: 'var(--logo-filter, invert(1))' }}
+              />
+              <span className="text-xl font-bold">
+                <span className="text-gradient">CODE</span>x<span className="text-primary">KUNAL</span>
+              </span>
             </div>
             <p className="text-sm text-muted-foreground mb-6">
-              Building digital experiences that matter.
+              Building futuristic digital experiences that matter.
             </p>
             <div className="flex gap-3">
               {socialLinks.map((social) => (
                 <a
                   key={social.name}
                   href={social.href}
-                  className="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-primary/50 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 glass rounded-full flex items-center justify-center hover:border-primary/50 hover:bg-primary/10 transition-all"
                   aria-label={social.name}
                 >
                   <social.icon size={18} />
@@ -110,7 +121,7 @@ export const Footer = () => {
 
         <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © 2024 Kunal. All rights reserved.
+            © {new Date().getFullYear()} CODExKUNAL. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground">
             Built with passion & React
