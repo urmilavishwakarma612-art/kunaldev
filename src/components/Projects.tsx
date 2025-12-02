@@ -15,14 +15,14 @@ const projects = [
   },
   {
     id: 2,
-    title: "CryptoVerse",
-    description: "A cryptocurrency tracking platform with live prices, portfolio management, and news aggregation.",
-    tags: ["Next.js", "Node.js", "PostgreSQL", "WebSocket"],
-    color: "from-blue-500/20 to-cyan-500/20",
+    title: "CodeCommunity",
+    description: "Gamified DSA & development platform combining Striver's A2Z Sheet, community forums, streaks, XP badges & leaderboards in one place.",
+    tags: ["React", "TypeScript", "Supabase", "Zustand", "ShadCN"],
+    color: "from-purple-500/20 to-indigo-500/20",
     features: [
-      "Real-time price updates via WebSocket",
-      "Secure authentication with JWT",
-      "Optimized for mobile devices",
+      "DSA progress tracker with 531 problems",
+      "Streak system, XP & leaderboards for motivation",
+      "Community forum & searchable question bank",
     ],
   },
   {
