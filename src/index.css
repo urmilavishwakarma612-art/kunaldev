@@ -114,6 +114,30 @@
                 inset 0 1px 0 0 hsl(0 0% 100% / 0.15);
   }
 
+  .nav-link-glow {
+    position: relative;
+    z-index: 1;
+  }
+
+  .nav-link-glow::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      hsl(217 91% 60% / 0.3) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  .nav-link-glow:hover::before {
+    opacity: 1;
+  }
+
   .glow-primary {
     box-shadow: var(--glow-primary);
   }
