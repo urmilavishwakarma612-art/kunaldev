@@ -80,10 +80,38 @@
   }
 
   .glass-nav {
-    @apply bg-background/20 backdrop-blur-3xl border border-white/10;
+    @apply backdrop-blur-3xl;
+    position: relative;
+    background: hsl(var(--background) / var(--nav-opacity, 0.2));
     box-shadow: 0 8px 32px 0 hsl(217 91% 60% / 0.15), 
-                0 0 0 1px hsl(0 0% 100% / 0.08),
                 inset 0 1px 0 0 hsl(0 0% 100% / 0.1);
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .glass-nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      90deg,
+      hsl(217 91% 60% / 0.5),
+      hsl(330 85% 60% / 0.5),
+      hsl(217 91% 60% / 0.5)
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    background-size: 200% 100%;
+    animation: gradient-border 4s linear infinite;
+  }
+
+  .glass-nav-scrolled {
+    --nav-opacity: 0.8;
+    box-shadow: 0 8px 32px 0 hsl(217 91% 60% / 0.25), 
+                inset 0 1px 0 0 hsl(0 0% 100% / 0.15);
   }
 
   .glow-primary {
@@ -179,4 +207,13 @@
 .animate-fade-in-delay-3 {
   animation: fade-in 0.8s ease-out 0.6s forwards;
   opacity: 0;
+}
+
+@keyframes gradient-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
 }
