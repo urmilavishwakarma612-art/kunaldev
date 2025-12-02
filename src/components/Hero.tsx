@@ -41,14 +41,12 @@ export const Hero = () => {
           <span className="text-lg md:text-xl text-muted-foreground">
             Hello, I'm Kunal
           </span>
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent p-0.5">
-            <div className="w-full h-full rounded-full bg-card flex items-center justify-center overflow-hidden">
-              <img 
-                src={codexkunalLogo} 
-                alt="CODExKUNAL" 
-                className="w-8 h-8 object-contain logo-adaptive"
-              />
-            </div>
+          <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center animate-pulse-slow">
+            <img 
+              src={codexkunalLogo} 
+              alt="CODExKUNAL" 
+              className="w-14 h-14 md:w-16 md:h-16 object-contain logo-adaptive animate-spin-slow"
+            />
           </div>
           <span className="text-lg md:text-xl text-muted-foreground">
             a Web Developer
