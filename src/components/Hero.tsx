@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Copy } from "lucide-react";
 import { toast } from "sonner";
+import codexkunalLogo from "@/assets/codexkunal-logo.png";
 
 export const Hero = () => {
   const copyEmail = () => {
-    navigator.clipboard.writeText("kunal@example.com");
+    navigator.clipboard.writeText("codexkunal.dev@gmail.com");
     toast.success("Email copied to clipboard!");
   };
 
@@ -41,8 +42,12 @@ export const Hero = () => {
             Hello, I'm Kunal
           </span>
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent p-0.5">
-            <div className="w-full h-full rounded-full bg-card flex items-center justify-center text-lg font-bold">
-              K
+            <div className="w-full h-full rounded-full bg-card flex items-center justify-center overflow-hidden">
+              <img 
+                src={codexkunalLogo} 
+                alt="CODExKUNAL" 
+                className="w-8 h-8 object-contain logo-adaptive"
+              />
             </div>
           </div>
           <span className="text-lg md:text-xl text-muted-foreground">
@@ -58,7 +63,7 @@ export const Hero = () => {
           </Button>
           <Button variant="glass" size="lg" onClick={copyEmail} className="group">
             <Copy size={16} />
-            kunal@example.com
+            codexkunal.dev@gmail.com
           </Button>
         </div>
       </div>
