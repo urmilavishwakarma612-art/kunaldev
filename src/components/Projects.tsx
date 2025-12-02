@@ -1,4 +1,6 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ExternalLink, Github } from "lucide-react";
+import rahiImg from "@/assets/rahi.png";
+import codeCommunityImg from "@/assets/code-community.png";
 
 const projects = [
   {
@@ -12,6 +14,9 @@ const projects = [
       "AI severity analysis & real-time volunteer routing",
       "Offline-first PWA with incident queue sync",
     ],
+    image: rahiImg,
+    liveUrl: "https://rahi-rescue.vercel.app",
+    githubUrl: "https://github.com/urmilavishwakarma612-art/rahi-guardian",
   },
   {
     id: 2,
@@ -24,6 +29,9 @@ const projects = [
       "Streak system, XP & leaderboards for motivation",
       "Community forum & searchable question bank",
     ],
+    image: codeCommunityImg,
+    liveUrl: "https://codexkunal.vercel.app",
+    githubUrl: "https://github.com/kunalvish08/2856e4ef-b87a-47d8-8597-1832e26085ab",
   },
   {
     id: 3,
@@ -66,20 +74,35 @@ export const Projects = () => {
               <div
                 className={`relative group ${index % 2 === 1 ? "md:col-start-2" : ""}`}
               >
-                <div
-                  className={`aspect-video rounded-2xl bg-gradient-to-br ${project.color} p-8 glass overflow-hidden`}
+                <a
+                  href={project.liveUrl || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent to-background/50" />
-                  <div className="relative h-full flex flex-col justify-between">
-                    <p className="text-sm text-foreground/80 max-w-md">
-                      {project.description}
-                    </p>
+                  <div
+                    className={`aspect-video rounded-2xl bg-gradient-to-br ${project.color} glass overflow-hidden relative`}
+                  >
+                    {project.image ? (
+                      <img
+                        src={project.image}
+                        alt={`${project.title} preview`}
+                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="p-8 h-full flex flex-col justify-between">
+                        <p className="text-sm text-foreground/80 max-w-md">
+                          {project.description}
+                        </p>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <ArrowUpRight
                       size={32}
                       className="absolute top-4 right-4 text-foreground/60 group-hover:text-foreground group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"
                     />
                   </div>
-                </div>
+                </a>
               </div>
 
               {/* Project Info */}
@@ -100,7 +123,7 @@ export const Projects = () => {
                   ))}
                 </ul>
 
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 mb-6">
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
@@ -110,6 +133,34 @@ export const Projects = () => {
                     </span>
                   ))}
                 </div>
+
+                {/* Project Links */}
+                {(project.liveUrl || project.githubUrl) && (
+                  <div className="flex gap-4">
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm text-accent hover:text-accent/80 transition-colors"
+                      >
+                        <ExternalLink size={16} />
+                        Live Demo
+                      </a>
+                    )}
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        <Github size={16} />
+                        Source Code
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           ))}
