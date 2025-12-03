@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Linkedin, Github, Instagram, Twitter, Mail, Send } from "lucide-react";
+import { Linkedin, Github, Instagram, Twitter, Mail, Send, MessageCircle, Video, FileText, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
@@ -19,13 +19,41 @@ const socialLinks = [
   },
   {
     name: "Instagram",
-    url: "https://www.instagram.com/code_x_kunal_dev/",
+    url: "https://instagram.com/code_x_kunal_dev",
     icon: Instagram,
   },
   {
     name: "Twitter",
     url: "https://x.com/Kunal_Vish_08",
     icon: Twitter,
+  },
+];
+
+const contactOptions = [
+  {
+    name: "DM on Instagram",
+    url: "https://instagram.com/code_x_kunal_dev",
+    icon: Instagram,
+    color: "from-pink-500 to-purple-500",
+  },
+  {
+    name: "DM on WhatsApp",
+    url: "https://wa.me/917985177849",
+    icon: MessageCircle,
+    color: "from-green-500 to-green-600",
+  },
+  {
+    name: "Schedule a Meet",
+    url: "https://calendly.com",
+    icon: Video,
+    color: "from-blue-500 to-cyan-500",
+    note: "Google Meet / Zoom",
+  },
+  {
+    name: "Fill a Form",
+    icon: FileText,
+    color: "from-primary to-accent",
+    action: "scroll-form",
   },
 ];
 
@@ -43,6 +71,16 @@ export const Contact = () => {
     message: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
+  const [showBookingOptions, setShowBookingOptions] = useState(false);
+
+  const handleContactOption = (option: typeof contactOptions[0]) => {
+    if (option.action === "scroll-form") {
+      setShowBookingOptions(false);
+      document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
+    } else if (option.url) {
+      window.open(option.url, "_blank", "noopener,noreferrer");
+    }
+  };
 
   const headerAnimation = useScrollAnimation(0.2);
   const formAnimation = useScrollAnimation(0.1);
@@ -130,6 +168,7 @@ export const Contact = () => {
         <div className="grid md:grid-cols-2 gap-12 items-start">
           {/* Contact Form */}
           <div
+            id="contact-form"
             ref={formAnimation.ref}
             className={`glass-strong rounded-2xl p-8 transition-all duration-700 delay-100 ${
               formAnimation.isVisible
@@ -197,6 +236,55 @@ export const Contact = () => {
                 : "opacity-0 translate-x-10"
             }`}
           >
+            {/* Book a Call Card */}
+            <div className="glass-strong rounded-2xl p-8 relative">
+              <h3 className="text-2xl font-display font-bold mb-4">Book a Call</h3>
+              <p className="text-muted-foreground mb-4">Choose your preferred way to connect</p>
+              <Button
+                variant="hero"
+                className="w-full"
+                onClick={() => setShowBookingOptions(!showBookingOptions)}
+              >
+                {showBookingOptions ? "Close Options" : "View Options"}
+              </Button>
+
+              {/* Booking Options Dropdown */}
+              {showBookingOptions && (
+                <div className="absolute top-full left-0 right-0 mt-2 z-50 glass-strong rounded-xl p-4 border border-border/50 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="flex justify-between items-center mb-3">
+                    <span className="text-sm font-medium text-muted-foreground">Choose an option</span>
+                    <button
+                      onClick={() => setShowBookingOptions(false)}
+                      className="p-1 hover:bg-background/50 rounded-full transition-colors"
+                    >
+                      <X className="h-4 w-4 text-muted-foreground" />
+                    </button>
+                  </div>
+                  <div className="space-y-2">
+                    {contactOptions.map((option) => (
+                      <button
+                        key={option.name}
+                        onClick={() => handleContactOption(option)}
+                        className="w-full flex items-center gap-3 p-3 rounded-lg bg-background/30 hover:bg-background/50 border border-border/30 hover:border-primary/50 transition-all group text-left"
+                      >
+                        <div className={`p-2 rounded-lg bg-gradient-to-br ${option.color}`}>
+                          <option.icon className="h-4 w-4 text-white" />
+                        </div>
+                        <div>
+                          <span className="font-medium text-foreground group-hover:text-primary transition-colors">
+                            {option.name}
+                          </span>
+                          {option.note && (
+                            <p className="text-xs text-muted-foreground">{option.note}</p>
+                          )}
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Email Card */}
             <div className="glass-strong rounded-2xl p-8">
               <h3 className="text-2xl font-display font-bold mb-4">Email Me</h3>

@@ -1,7 +1,47 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Instagram, MessageCircle, Video, FileText, X } from "lucide-react";
+
+const contactOptions = [
+  {
+    name: "DM on Instagram",
+    url: "https://instagram.com/code_x_kunal_dev",
+    icon: Instagram,
+    color: "from-pink-500 to-purple-500",
+  },
+  {
+    name: "DM on WhatsApp",
+    url: "https://wa.me/917985177849",
+    icon: MessageCircle,
+    color: "from-green-500 to-green-600",
+  },
+  {
+    name: "Schedule a Meet",
+    url: "https://calendly.com",
+    icon: Video,
+    color: "from-blue-500 to-cyan-500",
+    note: "Google Meet / Zoom",
+  },
+  {
+    name: "Fill a Form",
+    icon: FileText,
+    color: "from-primary to-accent",
+    action: "scroll-contact",
+  },
+];
 
 export const CTA = () => {
+  const [showOptions, setShowOptions] = useState(false);
+
+  const handleOption = (option: typeof contactOptions[0]) => {
+    if (option.action === "scroll-contact") {
+      setShowOptions(false);
+      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+    } else if (option.url) {
+      window.open(option.url, "_blank", "noopener,noreferrer");
+    }
+  };
+
   return (
     <section className="relative py-32 px-4">
       <div className="max-w-4xl mx-auto text-center">
@@ -35,13 +75,56 @@ export const CTA = () => {
           Let's Make It <span className="font-black text-gradient-accent">Happen!</span>
         </h2>
 
-        <Button variant="hero" size="lg" className="mt-8 group">
-          Get In Touch
-          <ArrowRight
-            size={18}
-            className="group-hover:translate-x-1 transition-transform"
-          />
-        </Button>
+        <div className="relative inline-block mt-8">
+          <Button 
+            variant="hero" 
+            size="lg" 
+            className="group"
+            onClick={() => setShowOptions(!showOptions)}
+          >
+            Book a Call
+            <ArrowRight
+              size={18}
+              className="group-hover:translate-x-1 transition-transform"
+            />
+          </Button>
+
+          {/* Options Dropdown */}
+          {showOptions && (
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 z-50 glass-strong rounded-xl p-4 border border-border/50 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-sm font-medium text-muted-foreground">Choose an option</span>
+                <button
+                  onClick={() => setShowOptions(false)}
+                  className="p-1 hover:bg-background/50 rounded-full transition-colors"
+                >
+                  <X className="h-4 w-4 text-muted-foreground" />
+                </button>
+              </div>
+              <div className="space-y-2">
+                {contactOptions.map((option) => (
+                  <button
+                    key={option.name}
+                    onClick={() => handleOption(option)}
+                    className="w-full flex items-center gap-3 p-3 rounded-lg bg-background/30 hover:bg-background/50 border border-border/30 hover:border-primary/50 transition-all group text-left"
+                  >
+                    <div className={`p-2 rounded-lg bg-gradient-to-br ${option.color}`}>
+                      <option.icon className="h-4 w-4 text-white" />
+                    </div>
+                    <div>
+                      <span className="font-medium text-foreground group-hover:text-primary transition-colors">
+                        {option.name}
+                      </span>
+                      {option.note && (
+                        <p className="text-xs text-muted-foreground">{option.note}</p>
+                      )}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
 
         <div className="mt-12">
           <p className="text-lg font-medium mb-2">
