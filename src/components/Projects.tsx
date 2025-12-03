@@ -6,20 +6,6 @@ import suvarnaKitchensImg from "@/assets/suvarna-kitchens.png";
 const projects = [
   {
     id: 1,
-    title: "Suvarna Kitchens",
-    description: "A premium restaurant website featuring an elegant dark theme with categorized menu sections for breakfast, lunch, dinner, snacks, desserts, soups, salads, and smoothies.",
-    tags: ["HTML", "CSS", "JavaScript", "Responsive Design"],
-    color: "from-amber-500/20 to-red-500/20",
-    features: [
-      "8 menu categories with beautiful food imagery",
-      "Featured recipes showcase with elegant card design",
-      "Chef's tips section & contact integration",
-    ],
-    image: suvarnaKitchensImg,
-    liveUrl: "https://kunalresto.ccbp.tech",
-  },
-  {
-    id: 2,
     title: "RAHI",
     description: "AI-powered emergency platform that enables victims to report highway incidents in under 20 seconds with GPS auto-location and offline support.",
     tags: ["React", "TypeScript", "Supabase", "Leaflet.js", "PWA"],
@@ -34,7 +20,7 @@ const projects = [
     githubUrl: "https://github.com/urmilavishwakarma612-art/rahi-guardian",
   },
   {
-    id: 3,
+    id: 2,
     title: "CodeCommunity",
     description: "Gamified DSA & development platform combining Striver's A2Z Sheet, community forums, streaks, XP badges & leaderboards in one place.",
     tags: ["React", "TypeScript", "Supabase", "Zustand", "ShadCN"],
@@ -49,7 +35,7 @@ const projects = [
     githubUrl: "https://github.com/kunalvish08/2856e4ef-b87a-47d8-8597-1832e26085ab",
   },
   {
-    id: 4,
+    id: 3,
     title: "Developer Portfolio",
     description: "A premium, futuristic portfolio with stunning animations, interactive star field background, and seamless user experience.",
     tags: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
@@ -59,6 +45,20 @@ const projects = [
       "Scroll-responsive infinite skill marquee",
       "Dark space theme with electric accents",
     ],
+  },
+  {
+    id: 4,
+    title: "Suvarna Kitchens",
+    description: "A premium restaurant website featuring an elegant dark theme with categorized menu sections for breakfast, lunch, dinner, snacks, desserts, soups, salads, and smoothies.",
+    tags: ["HTML", "CSS", "JavaScript", "Responsive Design"],
+    color: "from-amber-500/20 to-red-500/20",
+    features: [
+      "8 menu categories with beautiful food imagery",
+      "Featured recipes showcase with elegant card design",
+      "Chef's tips section & contact integration",
+    ],
+    image: suvarnaKitchensImg,
+    liveUrl: "https://kunalresto.ccbp.tech",
   },
 ];
 
