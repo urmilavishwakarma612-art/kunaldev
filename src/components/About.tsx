@@ -1,3 +1,5 @@
+import kunalAbout from "@/assets/kunal-about.png";
+
 export const About = () => {
   const stats = [
     { value: "3+", label: "Years Experience" },
@@ -51,12 +53,13 @@ export const About = () => {
               <div className="absolute inset-4 rounded-full border border-primary/20 animate-pulse-slow" style={{ animationDelay: "0.5s" }} />
               <div className="absolute inset-8 rounded-full border border-accent/20 animate-pulse-slow" style={{ animationDelay: "1s" }} />
               
-              {/* Center content */}
-              <div className="absolute inset-16 glass rounded-full flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-6xl font-bold text-gradient mb-2">K</div>
-                  <div className="text-sm text-muted-foreground">Web Developer</div>
-                </div>
+              {/* Center content - Profile Image */}
+              <div className="absolute inset-16 rounded-full overflow-hidden animate-pulse-slow">
+                <img 
+                  src={kunalAbout} 
+                  alt="Kunal - Web Developer" 
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               {/* Floating elements */}
