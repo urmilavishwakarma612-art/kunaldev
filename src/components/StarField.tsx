@@ -12,7 +12,7 @@ export const StarField = () => {
   const [stars, setStars] = useState<Star[]>([]);
 
   useEffect(() => {
-    const generatedStars = Array.from({ length: 100 }, (_, i) => ({
+    const generatedStars = Array.from({ length: 25 }, (_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
