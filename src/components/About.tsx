@@ -54,11 +54,11 @@ export const About = () => {
               <div className="absolute inset-8 rounded-full border border-accent/20 animate-pulse-slow" style={{ animationDelay: "1s" }} />
               
               {/* Center content - Profile Image */}
-              <div className="absolute inset-16 rounded-full overflow-hidden animate-pulse-slow">
+              <div className="absolute inset-16 rounded-full overflow-hidden group cursor-pointer">
                 <img 
                   src={kunalAbout} 
                   alt="Kunal - Web Developer" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
               </div>
 
