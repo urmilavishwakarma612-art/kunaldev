@@ -1,28 +1,62 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Copy } from "lucide-react";
 import { toast } from "sonner";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import codexkunalLogo from "@/assets/codexkunal-logo.png";
 import kunalProfile from "@/assets/kunal-profile.jpg";
+
 export const Hero = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Parallax transforms for different layers
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const orb1Y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const orb2Y = useTransform(scrollYProgress, [0, 1], ["0%", "70%"]);
+  const orb3Y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
   const copyEmail = () => {
     navigator.clipboard.writeText("codexkunal.dev@gmail.com");
     toast.success("Email copied to clipboard!");
   };
-  return <section id="home" className="relative min-h-screen flex items-center justify-center px-4 pt-20">
-      {/* Horizon glow effect */}
-      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-primary/5 via-transparent to-transparent" />
-      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-foreground/30 to-transparent" />
+
+  return (
+    <section ref={sectionRef} id="home" className="relative min-h-screen flex items-center justify-center px-4 pt-20 overflow-hidden">
+      {/* Parallax background layer */}
+      <motion.div 
+        className="absolute inset-0 pointer-events-none"
+        style={{ y: bgY }}
+      >
+        {/* Horizon glow effect */}
+        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-primary/5 via-transparent to-transparent" />
+        <div className="absolute bottom-20 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-foreground/30 to-transparent" />
+      </motion.div>
       
-      {/* Floating orbs */}
-      <div className="absolute top-1/3 left-10 w-2 h-2 rounded-full bg-primary animate-float opacity-60" />
-      <div className="absolute top-1/2 right-16 w-3 h-3 rounded-full bg-accent animate-float opacity-50" style={{
-      animationDelay: "1s"
-    }} />
-      <div className="absolute bottom-1/3 left-1/4 w-1.5 h-1.5 rounded-full bg-primary animate-float opacity-40" style={{
-      animationDelay: "2s"
-    }} />
+      {/* Floating orbs with different parallax speeds */}
+      <motion.div 
+        className="absolute top-1/3 left-10 w-2 h-2 rounded-full bg-primary animate-float opacity-60"
+        style={{ y: orb1Y }}
+      />
+      <motion.div 
+        className="absolute top-1/2 right-16 w-3 h-3 rounded-full bg-accent animate-float opacity-50"
+        style={{ y: orb2Y, animationDelay: "1s" }}
+      />
+      <motion.div 
+        className="absolute bottom-1/3 left-1/4 w-1.5 h-1.5 rounded-full bg-primary animate-float opacity-40"
+        style={{ y: orb3Y, animationDelay: "2s" }}
+      />
       
-      <div className="relative z-10 text-center max-w-5xl mx-auto">
+      {/* Content with parallax and fade */}
+      <motion.div 
+        className="relative z-10 text-center max-w-5xl mx-auto"
+        style={{ y: contentY, opacity }}
+      >
         {/* Profile Picture with animated border */}
         <div className="relative mx-auto mb-8 animate-fade-in group">
           
@@ -76,6 +110,7 @@ export const Hero = () => {
             codexkunal.dev@gmail.com
           </Button>
         </div>
-      </div>
-    </section>;
+      </motion.div>
+    </section>
+  );
 };
