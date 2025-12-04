@@ -44,7 +44,7 @@ const contactOptions = [
   },
   {
     name: "Schedule a Meet",
-    url: "https://calendly.com",
+    url: "https://calendly.com/codexkunal-dev/30min",
     icon: Video,
     color: "from-blue-500 to-cyan-500",
     note: "Google Meet / Zoom",
