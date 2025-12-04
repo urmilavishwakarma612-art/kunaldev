@@ -1,4 +1,4 @@
-import { ArrowUpRight, ExternalLink, Github } from "lucide-react";
+import { ProjectsCarousel } from "./ProjectsCarousel";
 import rahiImg from "@/assets/rahi.png";
 import codeCommunityImg from "@/assets/code-community.png";
 import suvarnaKitchensImg from "@/assets/suvarna-kitchens.png";
@@ -65,7 +65,7 @@ const projects = [
 export const Projects = () => {
   return (
     <section id="work" className="relative py-32 px-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
           <span className="text-sm text-muted-foreground tracking-widest uppercase">
@@ -76,110 +76,13 @@ export const Projects = () => {
           </h2>
         </div>
 
-        {/* Projects Grid */}
-        <div className="space-y-16">
-          {projects.map((project, index) => (
-            <div
-              key={project.id}
-              className={`grid md:grid-cols-2 gap-8 items-center ${
-                index % 2 === 1 ? "md:grid-flow-dense" : ""
-              }`}
-            >
-              {/* Project Preview */}
-              <div
-                className={`relative group ${index % 2 === 1 ? "md:col-start-2" : ""}`}
-              >
-                <a
-                  href={project.liveUrl || "#"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                >
-                  <div
-                    className={`aspect-video rounded-2xl bg-gradient-to-br ${project.color} glass overflow-hidden relative`}
-                  >
-                    {project.image ? (
-                      <img
-                        src={project.image}
-                        alt={`${project.title} preview`}
-                        className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="p-8 h-full flex flex-col justify-between">
-                        <p className="text-sm text-foreground/80 max-w-md">
-                          {project.description}
-                        </p>
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <ArrowUpRight
-                      size={32}
-                      className="absolute top-4 right-4 text-foreground/60 group-hover:text-foreground group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300"
-                    />
-                  </div>
-                </a>
-              </div>
-
-              {/* Project Info */}
-              <div className={index % 2 === 1 ? "md:col-start-1 md:row-start-1" : ""}>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-6 h-0.5 bg-accent" />
-                  <h3 className="text-2xl md:text-3xl font-bold">{project.title}</h3>
-                </div>
-
-                <p className="text-muted-foreground mb-6">{project.description}</p>
-
-                <ul className="space-y-2 mb-6">
-                  {project.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm">
-                      <span className="text-accent mt-1">✦</span>
-                      <span className="text-muted-foreground">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 text-xs font-medium glass rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Project Links */}
-                {(project.liveUrl || project.githubUrl) && (
-                  <div className="flex gap-4">
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm text-accent hover:text-accent/80 transition-colors"
-                      >
-                        <ExternalLink size={16} />
-                        Live Demo
-                      </a>
-                    )}
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        <Github size={16} />
-                        Source Code
-                      </a>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Projects Carousel */}
+        <ProjectsCarousel 
+          projects={projects} 
+          speed={40} 
+          gap={24} 
+          cardWidth={380} 
+        />
       </div>
     </section>
   );
