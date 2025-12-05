@@ -98,7 +98,12 @@ export const Hero = () => {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-delay-3">
-          <Button variant="hero" size="lg" className="group relative overflow-hidden">
+          <Button 
+            variant="hero" 
+            size="lg" 
+            className="group relative overflow-hidden"
+            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+          >
             <span className="relative z-10 flex items-center gap-2">
               Let's Connect
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
