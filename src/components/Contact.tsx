@@ -5,155 +5,133 @@ import { Textarea } from "@/components/ui/textarea";
 import { Linkedin, Github, Instagram, Twitter, Mail, Send, MessageCircle, Video, FileText, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-
-const socialLinks = [
-  {
-    name: "LinkedIn",
-    url: "https://www.linkedin.com/in/kunal-vishwakarma-975b26326/",
-    icon: Linkedin,
-  },
-  {
-    name: "GitHub",
-    url: "https://github.com/kunalvish08",
-    icon: Github,
-  },
-  {
-    name: "Instagram",
-    url: "https://instagram.com/code_x_kunal_dev",
-    icon: Instagram,
-  },
-  {
-    name: "Twitter",
-    url: "https://x.com/Kunal_Vish_08",
-    icon: Twitter,
-  },
-];
-
-const contactOptions = [
-  {
-    name: "DM on Instagram",
-    url: "https://instagram.com/code_x_kunal_dev",
-    icon: Instagram,
-    color: "from-pink-500 to-purple-500",
-  },
-  {
-    name: "DM on WhatsApp",
-    url: "https://wa.me/917985177849",
-    icon: MessageCircle,
-    color: "from-green-500 to-green-600",
-  },
-  {
-    name: "Schedule a Meet",
-    url: "https://calendly.com/codexkunal-dev/30min",
-    icon: Video,
-    color: "from-blue-500 to-cyan-500",
-    note: "Google Meet / Zoom",
-  },
-  {
-    name: "Fill a Form",
-    icon: FileText,
-    color: "from-primary to-accent",
-    action: "scroll-form",
-  },
-];
-
+const socialLinks = [{
+  name: "LinkedIn",
+  url: "https://www.linkedin.com/in/kunal-vishwakarma-975b26326/",
+  icon: Linkedin
+}, {
+  name: "GitHub",
+  url: "https://github.com/kunalvish08",
+  icon: Github
+}, {
+  name: "Instagram",
+  url: "https://instagram.com/code_x_kunal_dev",
+  icon: Instagram
+}, {
+  name: "Twitter",
+  url: "https://x.com/Kunal_Vish_08",
+  icon: Twitter
+}];
+const contactOptions = [{
+  name: "DM on Instagram",
+  url: "https://instagram.com/code_x_kunal_dev",
+  icon: Instagram,
+  color: "from-pink-500 to-purple-500"
+}, {
+  name: "DM on WhatsApp",
+  url: "https://wa.me/917985177849",
+  icon: MessageCircle,
+  color: "from-green-500 to-green-600"
+}, {
+  name: "Schedule a Meet",
+  url: "https://calendly.com/codexkunal-dev/30min",
+  icon: Video,
+  color: "from-blue-500 to-cyan-500",
+  note: "Google Meet / Zoom"
+}, {
+  name: "Fill a Form",
+  icon: FileText,
+  color: "from-primary to-accent",
+  action: "scroll-form"
+}];
 interface FormErrors {
   name?: string;
   email?: string;
   message?: string;
 }
-
 export const Contact = () => {
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    message: "",
+    message: ""
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [showBookingOptions, setShowBookingOptions] = useState(false);
-
   const handleContactOption = (option: typeof contactOptions[0]) => {
     if (option.action === "scroll-form") {
       setShowBookingOptions(false);
-      document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
+      document.getElementById("contact-form")?.scrollIntoView({
+        behavior: "smooth"
+      });
     } else if (option.url) {
       window.open(option.url, "_blank", "noopener,noreferrer");
     }
   };
-
   const headerAnimation = useScrollAnimation(0.2);
   const formAnimation = useScrollAnimation(0.1);
   const infoAnimation = useScrollAnimation(0.1);
-
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
-
     if (!formData.name.trim()) {
       newErrors.name = "Name is required";
     } else if (formData.name.trim().length < 2) {
       newErrors.name = "Name must be at least 2 characters";
     }
-
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Please enter a valid email";
     }
-
     if (!formData.message.trim()) {
       newErrors.message = "Message is required";
     } else if (formData.message.trim().length < 10) {
       newErrors.message = "Message must be at least 10 characters";
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!validateForm()) {
       toast({
         title: "Validation Error",
         description: "Please fix the errors in the form",
-        variant: "destructive",
+        variant: "destructive"
       });
       return;
     }
-
     const mailtoLink = `mailto:codexkunal.dev@gmail.com?subject=Contact from ${encodeURIComponent(formData.name.trim())}&body=${encodeURIComponent(formData.message.trim())}%0A%0AFrom: ${encodeURIComponent(formData.email.trim())}`;
     window.location.href = mailtoLink;
-
     toast({
       title: "Message Ready!",
-      description: "Your email client has been opened with the message.",
+      description: "Your email client has been opened with the message."
     });
-
-    setFormData({ name: "", email: "", message: "" });
+    setFormData({
+      name: "",
+      email: "",
+      message: ""
+    });
     setErrors({});
   };
-
   const handleChange = (field: keyof typeof formData, value: string) => {
-    setFormData({ ...formData, [field]: value });
+    setFormData({
+      ...formData,
+      [field]: value
+    });
     if (errors[field]) {
-      setErrors({ ...errors, [field]: undefined });
+      setErrors({
+        ...errors,
+        [field]: undefined
+      });
     }
   };
-
-  return (
-    <section id="contact" className="py-32 px-6 relative">
+  return <section id="contact" className="py-32 px-6 relative">
       <div className="max-w-6xl mx-auto">
         {/* Section Header */}
-        <div
-          ref={headerAnimation.ref}
-          className={`text-center mb-16 transition-all duration-700 ${
-            headerAnimation.isVisible
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-10"
-          }`}
-        >
+        <div ref={headerAnimation.ref} className={`text-center mb-16 transition-all duration-700 ${headerAnimation.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
           <p className="text-primary font-medium tracking-wider uppercase text-sm mb-4">
             Get In Touch
           </p>
@@ -167,58 +145,20 @@ export const Contact = () => {
 
         <div className="grid md:grid-cols-2 gap-12 items-start">
           {/* Contact Form */}
-          <div
-            id="contact-form"
-            ref={formAnimation.ref}
-            className={`glass-strong rounded-2xl p-8 transition-all duration-700 delay-100 ${
-              formAnimation.isVisible
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-10"
-            }`}
-          >
+          <div id="contact-form" ref={formAnimation.ref} className={`glass-strong rounded-2xl p-8 transition-all duration-700 delay-100 ${formAnimation.isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-10"}`}>
             <h3 className="text-2xl font-display font-bold mb-6">Send a Message</h3>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <Input
-                  type="text"
-                  placeholder="Your Name"
-                  value={formData.name}
-                  onChange={(e) => handleChange("name", e.target.value)}
-                  className={`bg-background/50 border-border/50 focus:border-primary transition-colors ${
-                    errors.name ? "border-destructive" : ""
-                  }`}
-                />
-                {errors.name && (
-                  <p className="text-destructive text-sm mt-1">{errors.name}</p>
-                )}
+                <Input type="text" placeholder="Your Name" value={formData.name} onChange={e => handleChange("name", e.target.value)} className={`bg-background/50 border-border/50 focus:border-primary transition-colors ${errors.name ? "border-destructive" : ""}`} />
+                {errors.name && <p className="text-destructive text-sm mt-1">{errors.name}</p>}
               </div>
               <div>
-                <Input
-                  type="email"
-                  placeholder="Your Email"
-                  value={formData.email}
-                  onChange={(e) => handleChange("email", e.target.value)}
-                  className={`bg-background/50 border-border/50 focus:border-primary transition-colors ${
-                    errors.email ? "border-destructive" : ""
-                  }`}
-                />
-                {errors.email && (
-                  <p className="text-destructive text-sm mt-1">{errors.email}</p>
-                )}
+                <Input type="email" placeholder="Your Email" value={formData.email} onChange={e => handleChange("email", e.target.value)} className={`bg-background/50 border-border/50 focus:border-primary transition-colors ${errors.email ? "border-destructive" : ""}`} />
+                {errors.email && <p className="text-destructive text-sm mt-1">{errors.email}</p>}
               </div>
               <div>
-                <Textarea
-                  placeholder="Your Message"
-                  value={formData.message}
-                  onChange={(e) => handleChange("message", e.target.value)}
-                  rows={5}
-                  className={`bg-background/50 border-border/50 focus:border-primary transition-colors resize-none ${
-                    errors.message ? "border-destructive" : ""
-                  }`}
-                />
-                {errors.message && (
-                  <p className="text-destructive text-sm mt-1">{errors.message}</p>
-                )}
+                <Textarea placeholder="Your Message" value={formData.message} onChange={e => handleChange("message", e.target.value)} rows={5} className={`bg-background/50 border-border/50 focus:border-primary transition-colors resize-none ${errors.message ? "border-destructive" : ""}`} />
+                {errors.message && <p className="text-destructive text-sm mt-1">{errors.message}</p>}
               </div>
               <Button type="submit" variant="hero" className="w-full group">
                 Send Message
@@ -228,70 +168,14 @@ export const Contact = () => {
           </div>
 
           {/* Contact Info & Social Links */}
-          <div
-            ref={infoAnimation.ref}
-            className={`space-y-8 transition-all duration-700 delay-200 ${
-              infoAnimation.isVisible
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-10"
-            }`}
-          >
+          <div ref={infoAnimation.ref} className={`space-y-8 transition-all duration-700 delay-200 ${infoAnimation.isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-10"}`}>
             {/* Book a Call Card */}
-            <div className="glass-strong rounded-2xl p-8 relative">
-              <h3 className="text-2xl font-display font-bold mb-4">Book a Call</h3>
-              <p className="text-muted-foreground mb-4">Choose your preferred way to connect</p>
-              <Button
-                variant="hero"
-                className="w-full"
-                onClick={() => setShowBookingOptions(!showBookingOptions)}
-              >
-                {showBookingOptions ? "Close Options" : "View Options"}
-              </Button>
-
-              {/* Booking Options Dropdown */}
-              {showBookingOptions && (
-                <div className="absolute top-full left-0 right-0 mt-2 z-50 glass-strong rounded-xl p-4 border border-border/50 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-sm font-medium text-muted-foreground">Choose an option</span>
-                    <button
-                      onClick={() => setShowBookingOptions(false)}
-                      className="p-1 hover:bg-background/50 rounded-full transition-colors"
-                    >
-                      <X className="h-4 w-4 text-muted-foreground" />
-                    </button>
-                  </div>
-                  <div className="space-y-2">
-                    {contactOptions.map((option) => (
-                      <button
-                        key={option.name}
-                        onClick={() => handleContactOption(option)}
-                        className="w-full flex items-center gap-3 p-3 rounded-lg bg-background/30 hover:bg-background/50 border border-border/30 hover:border-primary/50 transition-all group text-left"
-                      >
-                        <div className={`p-2 rounded-lg bg-gradient-to-br ${option.color}`}>
-                          <option.icon className="h-4 w-4 text-white" />
-                        </div>
-                        <div>
-                          <span className="font-medium text-foreground group-hover:text-primary transition-colors">
-                            {option.name}
-                          </span>
-                          {option.note && (
-                            <p className="text-xs text-muted-foreground">{option.note}</p>
-                          )}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
+            
 
             {/* Email Card */}
             <div className="glass-strong rounded-2xl p-8">
               <h3 className="text-2xl font-display font-bold mb-4">Email Me</h3>
-              <a
-                href="mailto:codexkunal.dev@gmail.com"
-                className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group"
-              >
+              <a href="mailto:codexkunal.dev@gmail.com" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group">
                 <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
                   <Mail className="h-5 w-5 text-primary" />
                 </div>
@@ -303,23 +187,14 @@ export const Contact = () => {
             <div className="glass-strong rounded-2xl p-8">
               <h3 className="text-2xl font-display font-bold mb-6">Follow Me</h3>
               <div className="grid grid-cols-2 gap-4">
-                {socialLinks.map((social, index) => (
-                  <a
-                    key={social.name}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 p-4 rounded-xl bg-background/30 hover:bg-primary/10 border border-border/30 hover:border-primary/50 transition-all group"
-                    style={{
-                      transitionDelay: infoAnimation.isVisible ? `${index * 100}ms` : "0ms",
-                    }}
-                  >
+                {socialLinks.map((social, index) => <a key={social.name} href={social.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-4 rounded-xl bg-background/30 hover:bg-primary/10 border border-border/30 hover:border-primary/50 transition-all group" style={{
+                transitionDelay: infoAnimation.isVisible ? `${index * 100}ms` : "0ms"
+              }}>
                     <social.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
                     <span className="text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">
                       {social.name}
                     </span>
-                  </a>
-                ))}
+                  </a>)}
               </div>
             </div>
           </div>
@@ -328,6 +203,5 @@ export const Contact = () => {
 
       {/* Background Glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-accent/10 rounded-full blur-[120px] pointer-events-none" />
-    </section>
-  );
+    </section>;
 };
