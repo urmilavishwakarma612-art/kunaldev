@@ -6,7 +6,7 @@ import {
   useSpring,
   AnimatePresence,
 } from "framer-motion";
-import { ExternalLink, Github, X } from "lucide-react";
+import { ExternalLink, Github, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -315,16 +315,46 @@ export const ProjectsCarousel = ({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
 
+  const scrollLeft = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({ left: -(cardWidth + gap), behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({ left: cardWidth + gap, behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="relative w-full overflow-hidden">
       {/* Gradient Edges */}
       <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
+      {/* Left Navigation Button */}
+      <button
+        onClick={scrollLeft}
+        className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 flex items-center justify-center text-foreground hover:bg-accent hover:text-accent-foreground transition-all duration-300 shadow-lg hover:scale-110"
+        aria-label="Previous project"
+      >
+        <ChevronLeft className="h-6 w-6" />
+      </button>
+
+      {/* Right Navigation Button */}
+      <button
+        onClick={scrollRight}
+        className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 flex items-center justify-center text-foreground hover:bg-accent hover:text-accent-foreground transition-all duration-300 shadow-lg hover:scale-110"
+        aria-label="Next project"
+      >
+        <ChevronRight className="h-6 w-6" />
+      </button>
+
       {/* Carousel Container */}
       <motion.div
         ref={containerRef}
-        className="flex cursor-grab active:cursor-grabbing"
+        className="flex cursor-grab active:cursor-grabbing overflow-x-auto scrollbar-hide"
         style={{ gap }}
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => !isModalOpen && setIsPaused(false)}
@@ -373,7 +403,7 @@ export const ProjectsCarousel = ({
 
       {/* Instructions */}
       <p className="text-center text-xs text-muted-foreground mt-4 opacity-60">
-        Hover to pause • Click to view details • Drag to scroll • ←→ keys to navigate
+        Use arrows to navigate • Click to view details • Drag to scroll
       </p>
     </div>
   );
