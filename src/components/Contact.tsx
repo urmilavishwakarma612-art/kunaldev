@@ -2,9 +2,22 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Linkedin, Github, Instagram, Twitter, Mail, Send, MessageCircle, Video, FileText, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+
+const serviceTypes = [
+  "Landing Page",
+  "Multi-Page Website",
+  "Full Stack Website",
+  "Portfolio Website",
+  "E-Commerce Website",
+  "Website Redesign",
+  "Bug Fix",
+  "Custom Requirement"
+];
+
 const socialLinks = [{
   name: "LinkedIn",
   url: "https://www.linkedin.com/in/kunal-vishwakarma-975b26326/",
@@ -56,6 +69,8 @@ export const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    serviceType: "",
+    budget: "",
     message: ""
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -103,7 +118,7 @@ export const Contact = () => {
       });
       return;
     }
-    const mailtoLink = `mailto:codexkunal.dev@gmail.com?subject=Contact from ${encodeURIComponent(formData.name.trim())}&body=${encodeURIComponent(formData.message.trim())}%0A%0AFrom: ${encodeURIComponent(formData.email.trim())}`;
+    const mailtoLink = `mailto:codexkunal.dev@gmail.com?subject=Contact from ${encodeURIComponent(formData.name.trim())} - ${encodeURIComponent(formData.serviceType || "General Inquiry")}&body=${encodeURIComponent(formData.message.trim())}%0A%0AService Type: ${encodeURIComponent(formData.serviceType || "Not specified")}%0ABudget: ₹${encodeURIComponent(formData.budget || "Not specified")}%0AFrom: ${encodeURIComponent(formData.email.trim())}`;
     window.location.href = mailtoLink;
     toast({
       title: "Message Ready!",
@@ -112,6 +127,8 @@ export const Contact = () => {
     setFormData({
       name: "",
       email: "",
+      serviceType: "",
+      budget: "",
       message: ""
     });
     setErrors({});
@@ -155,6 +172,29 @@ export const Contact = () => {
               <div>
                 <Input type="email" placeholder="Your Email" value={formData.email} onChange={e => handleChange("email", e.target.value)} className={`bg-background/50 border-border/50 focus:border-primary transition-colors ${errors.email ? "border-destructive" : ""}`} />
                 {errors.email && <p className="text-destructive text-sm mt-1">{errors.email}</p>}
+              </div>
+              <div>
+                <label className="text-sm text-muted-foreground mb-2 block">Service Type</label>
+                <Select value={formData.serviceType} onValueChange={(value) => handleChange("serviceType", value)}>
+                  <SelectTrigger className="bg-background/50 border-border/50 focus:border-primary transition-colors">
+                    <SelectValue placeholder="Select a service" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border-border">
+                    {serviceTypes.map((service) => (
+                      <SelectItem key={service} value={service}>{service}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-sm text-muted-foreground mb-2 block">Estimated Budget (₹)</label>
+                <Input 
+                  type="text" 
+                  placeholder="e.g., 5000" 
+                  value={formData.budget} 
+                  onChange={e => handleChange("budget", e.target.value)} 
+                  className="bg-background/50 border-border/50 focus:border-primary transition-colors" 
+                />
               </div>
               <div>
                 <Textarea placeholder="Your Message" value={formData.message} onChange={e => handleChange("message", e.target.value)} rows={5} className={`bg-background/50 border-border/50 focus:border-primary transition-colors resize-none ${errors.message ? "border-destructive" : ""}`} />
