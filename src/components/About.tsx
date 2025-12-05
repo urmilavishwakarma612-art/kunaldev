@@ -4,7 +4,7 @@ export const About = () => {
   const stats = [
     { value: "3+", label: "Years Experience" },
     { value: "50+", label: "Projects Completed" },
-    { value: "30+", label: "Happy Clients" },
+    { value: "1+", label: "Happy Clients" },
     { value: "99%", label: "Client Satisfaction" },
   ];
 
