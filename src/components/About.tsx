@@ -2,10 +2,10 @@ import kunalAbout from "@/assets/kunal-about.png";
 
 export const About = () => {
   const stats = [
-    { value: "3+", label: "Years Experience" },
-    { value: "50+", label: "Projects Completed" },
-    { value: "1+", label: "Happy Clients" },
-    { value: "99%", label: "Client Satisfaction" },
+    { value: "1+", label: "Years Experience" },
+    { value: "5+", label: "Projects Completed" },
+    { value: "5+", label: "Happy Clients" },
+    { value: "95%", label: "Client Satisfaction" },
   ];
 
   return (
