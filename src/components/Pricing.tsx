@@ -1,6 +1,35 @@
-import { Check, Zap, Star, Crown } from "lucide-react";
+import { useState } from "react";
+import { Check, Zap, Star, Crown, Instagram, MessageCircle, Video, FileText, X } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Button } from "@/components/ui/button";
+
+const contactOptions = [
+  {
+    name: "DM on Instagram",
+    url: "https://instagram.com/code_x_kunal_dev",
+    icon: Instagram,
+    color: "from-pink-500 to-purple-500",
+  },
+  {
+    name: "DM on WhatsApp",
+    url: "https://wa.me/917985177849",
+    icon: MessageCircle,
+    color: "from-green-500 to-green-600",
+  },
+  {
+    name: "Schedule a Meet",
+    url: "https://calendly.com/codexkunal-dev/30min",
+    icon: Video,
+    color: "from-blue-500 to-cyan-500",
+    note: "Google Meet / Zoom",
+  },
+  {
+    name: "Fill a Form",
+    icon: FileText,
+    color: "from-primary to-accent",
+    action: "scroll-contact",
+  },
+];
 
 const packages = [
   {
@@ -66,9 +95,15 @@ const packages = [
 
 export const Pricing = () => {
   const { ref, isVisible } = useScrollAnimation(0.1);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  const handleBookCall = () => {
-    window.open("https://calendly.com/codexkunal-dev/30min", "_blank");
+  const handleOption = (option: typeof contactOptions[0]) => {
+    if (option.action === "scroll-contact") {
+      setActiveDropdown(null);
+      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+    } else if (option.url) {
+      window.open(option.url, "_blank", "noopener,noreferrer");
+    }
   };
 
   return (
@@ -170,16 +205,52 @@ export const Pricing = () => {
                   </ul>
 
                   {/* CTA Button */}
-                  <Button
-                    onClick={handleBookCall}
-                    className={`w-full ${
-                      pkg.popular
-                        ? "bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground"
-                        : "glass border border-border/50 hover:bg-primary/10 text-foreground"
-                    }`}
-                  >
-                    Book a Call
-                  </Button>
+                  <div className="relative">
+                    <Button
+                      onClick={() => setActiveDropdown(activeDropdown === pkg.name ? null : pkg.name)}
+                      className={`w-full ${
+                        pkg.popular
+                          ? "bg-gradient-to-r from-primary to-accent hover:opacity-90 text-primary-foreground"
+                          : "glass border border-border/50 hover:bg-primary/10 text-foreground"
+                      }`}
+                    >
+                      Book a Call
+                    </Button>
+                    {activeDropdown === pkg.name && (
+                      <div className="absolute bottom-full left-0 right-0 mb-2 z-50 glass-strong rounded-xl p-3 border border-border/50 shadow-2xl animate-in fade-in slide-in-from-bottom-2 duration-200">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-xs font-medium text-muted-foreground">Choose an option</span>
+                          <button
+                            onClick={() => setActiveDropdown(null)}
+                            className="p-1 hover:bg-background/50 rounded-full transition-colors"
+                          >
+                            <X className="h-3 w-3 text-muted-foreground" />
+                          </button>
+                        </div>
+                        <div className="space-y-1">
+                          {contactOptions.map((option) => (
+                            <button
+                              key={option.name}
+                              onClick={() => handleOption(option)}
+                              className="w-full flex items-center gap-2 p-2 rounded-lg bg-background/30 hover:bg-background/50 border border-border/30 hover:border-primary/50 transition-all group text-left"
+                            >
+                              <div className={`p-1.5 rounded-lg bg-gradient-to-br ${option.color}`}>
+                                <option.icon className="h-3 w-3 text-white" />
+                              </div>
+                              <div>
+                                <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                                  {option.name}
+                                </span>
+                                {option.note && (
+                                  <p className="text-[10px] text-muted-foreground">{option.note}</p>
+                                )}
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
