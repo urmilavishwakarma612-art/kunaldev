@@ -174,20 +174,6 @@ const ProjectModal = ({
           </DialogDescription>
         </DialogHeader>
 
-        {/* Image Section - Separate from content */}
-        <div className={`relative w-full aspect-video rounded-xl overflow-hidden bg-gradient-to-br ${project.color} mt-4`}>
-          {project.image ? (
-            <img
-              src={project.image}
-              alt={`${project.title} screenshot`}
-              className="w-full h-full object-cover object-top"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <span className="text-6xl font-bold text-foreground/20">{project.title[0]}</span>
-            </div>
-          )}
-        </div>
 
         {/* Content Section */}
         <div className="space-y-6 mt-6">
