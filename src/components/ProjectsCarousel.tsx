@@ -163,9 +163,19 @@ const ProjectModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto glass border-border/50 p-0">
-        {/* Hero Image Section */}
-        <div className={`relative aspect-video bg-gradient-to-br ${project.color} overflow-hidden`}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto glass border-border/50">
+        {/* Header with Title */}
+        <DialogHeader className="pb-4 border-b border-border/30">
+          <DialogTitle className="text-2xl md:text-3xl font-bold text-foreground">
+            {project.title}
+          </DialogTitle>
+          <DialogDescription className="text-muted-foreground">
+            {project.description}
+          </DialogDescription>
+        </DialogHeader>
+
+        {/* Image Section - Separate from content */}
+        <div className={`relative w-full aspect-video rounded-xl overflow-hidden bg-gradient-to-br ${project.color} mt-4`}>
           {project.image ? (
             <img
               src={project.image}
@@ -177,21 +187,11 @@ const ProjectModal = ({
               <span className="text-6xl font-bold text-foreground/20">{project.title[0]}</span>
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
-          
-          {/* Title Overlay */}
-          <div className="absolute bottom-0 left-0 right-0 p-6">
-            <DialogHeader className="text-left">
-              <DialogTitle className="text-3xl md:text-4xl font-bold text-foreground drop-shadow-lg">
-                {project.title}
-              </DialogTitle>
-            </DialogHeader>
-          </div>
         </div>
 
         {/* Content Section */}
-        <div className="p-6 space-y-6">
-          {/* Quick Links - Top */}
+        <div className="space-y-6 mt-6">
+          {/* Quick Links */}
           <div className="flex flex-wrap gap-3">
             {project.liveUrl && (
               <Button asChild size="lg" className="gap-2">
@@ -209,17 +209,6 @@ const ProjectModal = ({
                 </a>
               </Button>
             )}
-          </div>
-
-          {/* Description */}
-          <div className="space-y-2">
-            <h4 className="text-xs font-semibold text-accent uppercase tracking-widest flex items-center gap-2">
-              <span className="w-8 h-px bg-accent" />
-              Overview
-            </h4>
-            <p className="text-base text-muted-foreground leading-relaxed">
-              {project.description}
-            </p>
           </div>
 
           {/* Problem & Solution Grid */}
