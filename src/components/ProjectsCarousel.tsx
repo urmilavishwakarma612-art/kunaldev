@@ -20,6 +20,8 @@ interface Project {
   id: number;
   title: string;
   description: string;
+  problemStatement?: string;
+  solution?: string;
   tags: string[];
   color: string;
   features: string[];
@@ -161,71 +163,131 @@ const ProjectModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto glass border-border/50">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">{project.title}</DialogTitle>
-          <DialogDescription className="text-muted-foreground">
-            {project.description}
-          </DialogDescription>
-        </DialogHeader>
-
-        {/* Project Image */}
-        {project.image && (
-          <div className={`aspect-video rounded-xl bg-gradient-to-br ${project.color} overflow-hidden mb-4`}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto glass border-border/50 p-0">
+        {/* Hero Image Section */}
+        <div className={`relative aspect-video bg-gradient-to-br ${project.color} overflow-hidden`}>
+          {project.image ? (
             <img
               src={project.image}
               alt={`${project.title} screenshot`}
               className="w-full h-full object-cover object-top"
             />
-          </div>
-        )}
-
-        {/* Features */}
-        <div className="space-y-3 mb-4">
-          <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider">Key Features</h4>
-          <ul className="space-y-2">
-            {project.features.map((feature, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm">
-                <span className="text-accent mt-0.5">✦</span>
-                <span className="text-muted-foreground">{feature}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Tech Stack */}
-        <div className="space-y-3 mb-6">
-          <h4 className="text-sm font-semibold text-foreground uppercase tracking-wider">Tech Stack</h4>
-          <div className="flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-3 py-1.5 text-sm font-medium bg-accent/10 text-accent border border-accent/20 rounded-full"
-              >
-                {tag}
-              </span>
-            ))}
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="text-6xl font-bold text-foreground/20">{project.title[0]}</span>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
+          
+          {/* Title Overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            <DialogHeader className="text-left">
+              <DialogTitle className="text-3xl md:text-4xl font-bold text-foreground drop-shadow-lg">
+                {project.title}
+              </DialogTitle>
+            </DialogHeader>
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-3">
-          {project.liveUrl && (
-            <Button asChild className="flex-1" variant="default">
-              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Live Demo
-              </a>
-            </Button>
+        {/* Content Section */}
+        <div className="p-6 space-y-6">
+          {/* Quick Links - Top */}
+          <div className="flex flex-wrap gap-3">
+            {project.liveUrl && (
+              <Button asChild size="lg" className="gap-2">
+                <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="h-4 w-4" />
+                  View Live Demo
+                </a>
+              </Button>
+            )}
+            {project.githubUrl && (
+              <Button asChild size="lg" variant="outline" className="gap-2">
+                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                  <Github className="h-4 w-4" />
+                  Source Code
+                </a>
+              </Button>
+            )}
+          </div>
+
+          {/* Description */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-semibold text-accent uppercase tracking-widest flex items-center gap-2">
+              <span className="w-8 h-px bg-accent" />
+              Overview
+            </h4>
+            <p className="text-base text-muted-foreground leading-relaxed">
+              {project.description}
+            </p>
+          </div>
+
+          {/* Problem & Solution Grid */}
+          {(project.problemStatement || project.solution) && (
+            <div className="grid md:grid-cols-2 gap-4">
+              {project.problemStatement && (
+                <div className="p-4 rounded-xl bg-destructive/5 border border-destructive/20 space-y-2">
+                  <h4 className="text-xs font-semibold text-destructive uppercase tracking-widest flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-destructive" />
+                    Problem Statement
+                  </h4>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {project.problemStatement}
+                  </p>
+                </div>
+              )}
+              {project.solution && (
+                <div className="p-4 rounded-xl bg-primary/5 border border-primary/20 space-y-2">
+                  <h4 className="text-xs font-semibold text-primary uppercase tracking-widest flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-primary" />
+                    Solution
+                  </h4>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {project.solution}
+                  </p>
+                </div>
+              )}
+            </div>
           )}
-          {project.githubUrl && (
-            <Button asChild className="flex-1" variant="outline">
-              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                <Github className="mr-2 h-4 w-4" />
-                Source Code
-              </a>
-            </Button>
-          )}
+
+          {/* Key Features */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-semibold text-accent uppercase tracking-widest flex items-center gap-2">
+              <span className="w-8 h-px bg-accent" />
+              Key Features
+            </h4>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {project.features.map((feature, i) => (
+                <div 
+                  key={i} 
+                  className="flex items-start gap-3 p-3 rounded-lg bg-accent/5 border border-accent/10 hover:border-accent/30 transition-colors"
+                >
+                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs font-bold">
+                    {i + 1}
+                  </span>
+                  <span className="text-sm text-foreground/80 leading-snug">{feature}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Tech Stack */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-semibold text-accent uppercase tracking-widest flex items-center gap-2">
+              <span className="w-8 h-px bg-accent" />
+              Tech Stack
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-4 py-2 text-sm font-medium bg-gradient-to-r from-accent/10 to-primary/10 text-foreground border border-accent/20 rounded-full hover:border-accent/50 transition-colors"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
