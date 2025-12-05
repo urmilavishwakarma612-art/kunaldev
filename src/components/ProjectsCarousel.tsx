@@ -281,10 +281,12 @@ export const ProjectsCarousel = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [manualOffset, setManualOffset] = useState(0);
 
   // Duplicate projects for seamless loop
   const duplicatedProjects = [...projects, ...projects];
   const totalWidth = duplicatedProjects.length * (cardWidth + gap);
+  const singleSetWidth = projects.length * (cardWidth + gap);
 
   const handleProjectSelect = (project: Project) => {
     setSelectedProject(project);
@@ -298,34 +300,31 @@ export const ProjectsCarousel = ({
     setIsPaused(false);
   };
 
+  const scrollLeft = () => {
+    setIsPaused(true);
+    setManualOffset((prev) => Math.min(prev + (cardWidth + gap), 0));
+  };
+
+  const scrollRight = () => {
+    setIsPaused(true);
+    setManualOffset((prev) => Math.max(prev - (cardWidth + gap), -singleSetWidth));
+  };
+
   // Keyboard navigation
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (!containerRef.current || isModalOpen) return;
+    if (isModalOpen) return;
     
-    const scrollAmount = cardWidth + gap;
     if (e.key === "ArrowLeft") {
-      containerRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+      scrollLeft();
     } else if (e.key === "ArrowRight") {
-      containerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      scrollRight();
     }
-  }, [cardWidth, gap, isModalOpen]);
+  }, [isModalOpen, cardWidth, gap, singleSetWidth]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown]);
-
-  const scrollLeft = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({ left: -(cardWidth + gap), behavior: "smooth" });
-    }
-  };
-
-  const scrollRight = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollBy({ left: cardWidth + gap, behavior: "smooth" });
-    }
-  };
 
   return (
     <div className="relative w-full overflow-hidden">
@@ -354,27 +353,37 @@ export const ProjectsCarousel = ({
       {/* Carousel Container */}
       <motion.div
         ref={containerRef}
-        className="flex cursor-grab active:cursor-grabbing overflow-x-auto scrollbar-hide"
+        className="flex cursor-grab active:cursor-grabbing"
         style={{ gap }}
         onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => !isModalOpen && setIsPaused(false)}
+        onMouseLeave={() => {
+          if (!isModalOpen) {
+            setIsPaused(false);
+            setManualOffset(0);
+          }
+        }}
         onFocus={() => setIsPaused(true)}
-        onBlur={() => !isModalOpen && setIsPaused(false)}
+        onBlur={() => {
+          if (!isModalOpen) {
+            setIsPaused(false);
+            setManualOffset(0);
+          }
+        }}
         drag="x"
-        dragConstraints={{ left: -totalWidth / 2, right: 0 }}
+        dragConstraints={{ left: -singleSetWidth, right: 0 }}
         dragElastic={0.1}
         onDragStart={() => setIsDragging(true)}
         onDragEnd={() => setIsDragging(false)}
         animate={
           isPaused || isDragging
-            ? {}
+            ? { x: manualOffset }
             : {
-                x: [-totalWidth / 2, 0],
+                x: [0, -singleSetWidth],
               }
         }
         transition={
           isPaused || isDragging
-            ? {}
+            ? { type: "spring", stiffness: 300, damping: 30 }
             : {
                 x: {
                   duration: speed,
